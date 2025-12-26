@@ -1,0 +1,27 @@
+<mujoco model="freefall">
+    <!-- 시뮬레이션 옵션 설정: 지구 중력 및 계산 주기 설정 -->
+    <option gravity="0 0 -9.81" timestep="0.002" />
+
+    <worldbody>
+        <!-- 바닥(평면) 정의 -->
+        <geom name="floor" type="plane" size="10 10 0.1" rgba="0.8 0.9 0.8 1" />
+
+        <!-- 조명 설정: 위치 및 방향 -->
+        <light pos="0 0 10" dir="0 0 -1" />
+
+        <!-- 탄성 높은 빨간 공 -->
+        <body name="ball_elastic" pos="-1 0 10">
+            <!-- 자유 관절 부여 -->
+            <joint name="joint_elastic" type="free" />
+            <!-- solref(time_const, dampratio): 작게 설정하여 반발력 유지 (Elastic) -->
+            <geom name="geom_elastic" type="sphere" size="0.2" rgba="1 0 0 1" solref="0.02 1" />
+        </body>
+
+        <!-- 탄성 낮은 파란 공 -->
+        <body name="ball_inelastic" pos="1 0 10">
+            <joint name="joint_inelastic" type="free" />
+            <!-- 0.1로 크게 설정하여 에너지 흡수 (Inelastic) -->
+            <geom name="geom_inelastic" type="sphere" size="0.2" rgba="0 0 1 1" solref="0.1 1" />
+        </body>
+    </worldbody>
+</mujoco>

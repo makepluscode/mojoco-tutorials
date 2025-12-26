@@ -1,0 +1,15 @@
+[project]
+name = "mojoco-tutorials"
+version = "0.1.0"
+description = "MuJoCo x LeRobot Tutorials"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "mujoco",
+    "gymnasium",
+    "lerobot",
+    "numpy",
+    "opencv-python",
+    "matplotlib",
+    "torch",
+]

@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+.env
+.pytest_cache/
+.coverage
+htmlcov/
+
+# MuJoCo / Media
+*.mp4
+# *.png  # result.png is required for documentation, so we allow pngs for now or unignore specifically
+!**/result.png
+
+# IDEs
+.idea/
+.vscode/
+.DS_Store
