@@ -1,0 +1,28 @@
+<mujoco model="pendulum">
+    <!-- 시뮬레이션 옵션: 중력 및 정밀도를 위한 타임스텝 설정 -->
+    <!-- jacobian="sparse" 및 iterations 추가로 수치적 안정성 강화 -->
+    <option gravity="0 0 -9.81" timestep="0.001" jacobian="sparse" iterations="50" />
+
+    <worldbody>
+        <!-- 바닥 평면 -->
+        <geom name="floor" type="plane" size="5 5 0.1" rgba="0.8 0.9 0.8 1" />
+        <!-- 조명 설정 -->
+        <light pos="0 0 5" dir="0 0 -1" />
+
+        <!-- 진자 시스템 지지부 -->
+        <body name="support" pos="0 0 3">
+            <!-- 지지 실린더: 물리적으로 무관하도록 충돌 그룹 설정(contype/conaffinity 0) -->
+            <geom type="cylinder" size="0.02 0.05" rgba="0.5 0.5 0.5 1" contype="0" conaffinity="0" />
+
+            <!-- 진자 링크 -->
+            <body name="link" pos="0 0 0">
+                <!-- 힌지 관절: armature 추가로 수치적 관성 부여하여 떨림 방지 -->
+                <joint name="hinge" type="hinge" axis="0 1 0" pos="0 0 0" damping="0.1" armature="0.01" />
+                <!-- 진자 막대 -->
+                <geom type="capsule" fromto="0 0 0 0 0 -1" size="0.02" rgba="0 1 0 1" />
+                <!-- 끝단 무게추 -->
+                <geom name="bob" type="sphere" size="0.1" pos="0 0 -1" rgba="0 0 1 1" />
+            </body>
+        </body>
+    </worldbody>
+</mujoco>

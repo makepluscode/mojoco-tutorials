@@ -1,0 +1,34 @@
+<mujoco model="collision_filtering">
+    <!-- 시뮬레이션 옵션: 중력 및 정밀도를 위한 타임스텝 설정 -->
+    <option gravity="0 0 -9.81" timestep="0.001" />
+
+    <worldbody>
+        <!-- 바닥: 모든 그룹(1, 2)과 충돌하도록 설정 (1|2 = 3) -->
+        <geom name="floor" type="plane" size="5 5 0.1" rgba="0.8 0.9 0.8 1" contype="3" conaffinity="3" />
+        <light pos="0 0 5" dir="0 0 -1" />
+
+        <!-- 그룹 1 (빨간색): 탄성 있음 (Elastic) -->
+        <!-- contype=1, conaffinity=1 (자기들끼리만 충돌) -->
+        <body name="ball_a1" pos="-1 0 0.2">
+            <joint type="free" />
+            <!-- solref="0.02 1" 설정으로 탄성 부여 -->
+            <geom name="geom_a1" type="sphere" size="0.2" rgba="1 0 0 1" contype="1" conaffinity="1" solref="0.02 1" />
+        </body>
+        <body name="ball_a2" pos="1 0 0.2">
+            <joint type="free" />
+            <geom name="geom_a2" type="sphere" size="0.2" rgba="1 0 0 1" contype="1" conaffinity="1" solref="0.02 1" />
+        </body>
+
+        <!-- 그룹 2 (파란색): 탄성 없음 (Inelastic) -->
+        <!-- contype=2, conaffinity=2 (자기들끼리만 충돌) -->
+        <body name="ball_b1" pos="0 -1 0.2">
+            <joint type="free" />
+            <!-- solref=" 0.1 1" 설정으로 탄성 억제 -->
+            <geom name="geom_b1" type="sphere" size="0.2" rgba="0 0 1 1" contype="2" conaffinity="2" solref="0.1 1" />
+        </body>
+        <body name="ball_b2" pos="0 1 0.2">
+            <joint type="free" />
+            <geom name="geom_b2" type="sphere" size="0.2" rgba="0 0 1 1" contype="2" conaffinity="2" solref="0.1 1" />
+        </body>
+    </worldbody>
+</mujoco>
