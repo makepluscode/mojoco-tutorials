@@ -1476,6 +1476,7 @@ name = "mojoco-tutorials"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "glfw" },
     { name = "gymnasium" },
     { name = "lerobot" },
     { name = "matplotlib" },
@@ -1483,17 +1484,20 @@ dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.4.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "opencv-python" },
+    { name = "pynput" },
     { name = "torch" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "glfw" },
     { name = "gymnasium" },
     { name = "lerobot" },
     { name = "matplotlib" },
     { name = "mujoco" },
     { name = "numpy" },
     { name = "opencv-python" },
+    { name = "pynput" },
     { name = "torch" },
 ]
 

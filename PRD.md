@@ -43,17 +43,23 @@
 * **ex23_sensor_fusion:** 가속도계, 자이로, 터치 센서 데이터를 실시간으로 터미널에 출력 및 시각화 준비.
 * **ex24_contact_forces:** `data.contact`를 순회하며 발생하는 충돌 쌍과 법선 힘(Contact Force)을 계산 및 출력.
 
-### Phase 3: 비전 (Vision)
+### Phase 3: 운동학 기초 (Kinematics)
 
-* **ex31_camera_setup:** Front, Side, Top 3개 카메라 정의 및 뷰 전환 렌더링.
-* **ex32_rgb_render:** `mujoco.Renderer`를 사용해 오프스크린 렌더링 후 `numpy` 배열로 변환, PNG 저장.
-* **ex33_depth_render:** Depth 버퍼 데이터를 가져와 컬러맵 적용 후 시각화.
+* **ex31_fk_2dof:** 2자유도 로봇 팔의 순운동학(FK). 각도에 따른 End-effector 위치 계산 및 시각화.
+* **ex32_ik_site:** 역운동학(IK) 기초. `mocap` 바디나 `site`를 활용하여 목표 위치를 추종하는 IK 구현.
+* **ex33_trajectory_tracking:** 원형 또는 사각형 궤적 추종. 로봇 팔 끝단이 지정된 경로를 따라 움직이도록 제어.
 
-### Phase 4: LeRobot 통합 (AI Training Ready)
+### Phase 4: 비전 (Vision)
 
-* **ex41_gym_env:** `gymnasium.Env` 상속 클래스 구현. (Observation: RGB + Joint, Action: Torque). LeRobot 규격 준수.
-* **ex42_teleop_dataset:** 조작 데이터를 `LeRobotDataset` 형식으로 10 에피소드 이상 녹화 및 로컬 저장.
-* **ex43_policy_eval:** 저장된/학습된 정책(`Policy`)을 로드하여 환경에서 실행하고 성공률 측정.
+* **ex41_camera_setup:** Front, Side, Top 3개 카메라 정의 및 뷰 전환 렌더링.
+* **ex42_rgb_render:** `mujoco.Renderer`를 사용해 오프스크린 렌더링 후 `numpy` 배열로 변환, PNG 저장.
+* **ex43_depth_render:** Depth 버퍼 데이터를 가져와 컬러맵 적용 후 시각화.
+
+### Phase 5: LeRobot 통합 (AI Training Ready)
+
+* **ex51_gym_env:** `gymnasium.Env` 상속 클래스 구현. (Observation: RGB + Joint, Action: Torque). LeRobot 규격 준수.
+* **ex52_teleop_dataset:** 조작 데이터를 `LeRobotDataset` 형식으로 10 에피소드 이상 녹화 및 로컬 저장.
+* **ex53_policy_eval:** 저장된/학습된 정책(`Policy`)을 로드하여 환경에서 실행하고 성공률 측정.
 
 ---
 

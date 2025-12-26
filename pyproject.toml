@@ -12,4 +12,6 @@ dependencies = [
     "opencv-python",
     "matplotlib",
     "torch",
+    "glfw",
+    "pynput",
 ]
