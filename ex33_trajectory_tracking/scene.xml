@@ -1,0 +1,48 @@
+<mujoco model="2dof_arm_trajectory">
+    <option gravity="0 0 -9.81" timestep="0.002" />
+
+    <worldbody>
+        <light pos="0 0 3" dir="0 0 -1" />
+        <geom name="floor" type="plane" size="5 5 0.1" rgba="0.8 0.9 0.8 1" />
+
+        <!-- 로봇 베이스 -->
+        <body name="base" pos="0 0 0.1">
+            <geom type="cylinder" size="0.1 0.1" rgba="0.5 0.5 0.5 1" />
+
+            <!-- 첫 번째 링크 (어깨) -->
+            <body name="link1" pos="0 0 0.1">
+                <joint name="joint1" type="hinge" axis="0 0 1" damping="2.0" />
+                <geom type="capsule" fromto="0 0 0 0.5 0 0" size="0.04" rgba="1 0 0 1" />
+
+                <!-- 두 번째 링크 (팔꿈치) -->
+                <body name="link2" pos="0.5 0 0">
+                    <joint name="joint2" type="hinge" axis="0 0 1" damping="2.0" />
+                    <geom type="capsule" fromto="0 0 0 0.4 0 0" size="0.03" rgba="0 1 0 1" />
+                    <site name="ee" pos="0.4 0 0" size="0.04" rgba="1 1 0 1" />
+                </body>
+            </body>
+        </body>
+
+        <!-- IK 타겟 (mocap) -->
+        <body name="target" mocap="true" pos="0.5 0.5 0.2">
+            <geom type="sphere" size="0.03" rgba="1 1 1 0.5" contype="0" conaffinity="0" />
+        </body>
+
+        <!-- 파라미터 제어용 더미 바디 (화면 밖) -->
+        <body name="param_dummy" pos="0 0 -10">
+            <joint name="dummy_r" type="slide" axis="1 0 0" />
+            <joint name="dummy_f" type="slide" axis="1 0 0" />
+            <geom type="sphere" size="0.01" rgba="0 0 0 0" />
+        </body>
+    </worldbody>
+
+    <actuator>
+        <!-- 로봇 팔 제어 -->
+        <position name="arm_pos1" joint="joint1" kp="500" />
+        <position name="arm_pos2" joint="joint2" kp="500" />
+
+        <!-- 궤적 파라미터 (KP=0으로 설정하여 슬라이더 역할만 수행) -->
+        <position name="[Param] Radius" joint="dummy_r" kp="0" ctrlrange="0.05 0.4" />
+        <position name="[Param] Freq" joint="dummy_f" kp="0" ctrlrange="0.1 2.0" />
+    </actuator>
+</mujoco>

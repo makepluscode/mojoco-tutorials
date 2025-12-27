@@ -64,9 +64,9 @@ def main():
     step_size = 0.5
     damping = 0.01
 
-    # 초기 타겟 위치 설정
+    # 초기 타겟 위치 설정 (X=0.5, Y=0.5)
     data.ctrl[model.actuator("[Tgt] X").id] = 0.5
-    data.ctrl[model.actuator("[Tgt] Y").id] = 0.3
+    data.ctrl[model.actuator("[Tgt] Y").id] = 0.5
 
     # 뷰어 실행
     with mujoco.viewer.launch_passive(model, data) as viewer:
@@ -94,12 +94,11 @@ def main():
                 # DLS 기반 dq 계산
                 dq = J.T @ np.linalg.inv(J @ J.T + damping * np.eye(3)) @ error
                 
-                # 제어 입력 업데이트 (qpos + dq)
+                # 제어 입력 업데이트
                 data.ctrl[model.actuator("arm_pos1").id] = data.qpos[0] + dq[0] * step_size
                 data.ctrl[model.actuator("arm_pos2").id] = data.qpos[1] + dq[1] * step_size
 
                 # 2. 3D 시각화 (좌표 라벨 + 화살표 축)
-                # EE 라벨 (0번 인덱스)
                 ee_cm = curr_pos * 100.0
                 mujoco.mjv_initGeom(
                     viewer.user_scn.geoms[0],
