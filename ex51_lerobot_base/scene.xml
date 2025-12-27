@@ -1,0 +1,63 @@
+<mujoco model="lerobot_so100_base">
+    <compiler angle="radian" meshdir="../model/so100/assets" autolimits="true"/>
+
+    <option cone="elliptic" impratio="10"/>
+
+    <asset>
+        <material name="black" rgba="0.1 0.1 0.1 1"/>
+        <material name="white" rgba="1 1 1 1"/>
+
+        <mesh name="Base" file="Base.stl"/>
+        <mesh name="Base_Motor" file="Base_Motor.stl"/>
+        <mesh name="Rotation_Pitch" file="Rotation_Pitch.stl"/>
+        <mesh name="Rotation_Pitch_Motor" file="Rotation_Pitch_Motor.stl"/>
+    </asset>
+
+    <default>
+        <default class="so_arm100">
+            <!-- damping=2.0, frictionloss=0.3으로 물리적 저항을 늘려 고정력 강화 -->
+            <joint frictionloss="0.3" armature="0.1" damping="2.0"/>
+            <!-- kv=10으로 속도 감쇠를 추가하여 덜덜거림 방지 (dampratio는 제거) -->
+            <position kp="50" kv="10" forcerange="-3.5 3.5"/>
+            <default class="visual">
+                <geom type="mesh" contype="0" conaffinity="0" density="0" group="2" material="white"/>
+                <default class="motor_visual">
+                    <geom material="black"/>
+                </default>
+            </default>
+            <default class="collision">
+                <geom group="3" type="mesh" material="white"/>
+            </default>
+        </default>
+    </default>
+
+    <worldbody>
+        <light pos="0 0 2" dir="0 0 -1" diffuse="0.8 0.8 0.8" specular="0.3 0.3 0.3"/>
+        <geom name="floor" type="plane" size="1 1 0.1" rgba="0.8 0.8 0.8 1" pos="0 0 -0.01"/>
+
+        <body name="Base" childclass="so_arm100">
+            <geom type="mesh" mesh="Base" class="visual"/>
+            <geom type="mesh" mesh="Base_Motor" class="motor_visual"/>
+            <geom type="mesh" mesh="Base" class="collision"/>
+
+            <body name="Rotation_Pitch" pos="0 -0.0452 0.0165" quat="0.707105 0.707108 0 0">
+                <inertial pos="-9.07886e-05 0.0590972 0.031089" quat="0.363978 0.441169 -0.623108 0.533504" mass="0.119226"
+                  diaginertia="5.94278e-05 5.89975e-05 3.13712e-05"/>
+                <joint name="Rotation" axis="0 1 0" range="-1.92 1.92"/>
+                <geom type="mesh" mesh="Rotation_Pitch" class="visual"/>
+                <geom type="mesh" mesh="Rotation_Pitch_Motor" class="motor_visual"/>
+                <geom type="mesh" mesh="Rotation_Pitch" class="collision"/>
+                
+                <site name="base_axis" pos="0 0 0" size="0.01" rgba="1 0 0 1"/>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <position name="Rotation" joint="Rotation" kp="50" kv="10" forcerange="-3.5 3.5" inheritrange="1"/>
+    </actuator>
+
+    <contact>
+        <exclude body1="Base" body2="Rotation_Pitch"/>
+    </contact>
+</mujoco>

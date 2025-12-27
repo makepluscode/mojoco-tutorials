@@ -33,18 +33,28 @@ uv run main.py
 ### Phase 2: 제어 및 센서 (Control & Sensors)
 * `ex21_motor_control`: 2자유도 로봇 팔 실시간 키보드 제어.
 * `ex22_pid_control`: PID 각도 추종 제어.
-* `ex23_sensor_fusion`: 센서 데이터 수집 및 출력.
+* `ex23_motor_encoder`: 엔코더 피드백 및 데이터 노이즈 시뮬레이션.
 * `ex24_contact_forces`: 충돌 힘 계산 및 시각화.
 
-### Phase 3: 비전 (Vision)
-* `ex31_camera_setup`: 다중 카메라 설정 및 렌더링.
-* `ex32_rgb_render`: 오프스크린 렌더링 및 PNG 저장.
-* `ex33_depth_render`: Depth 맵 시각화.
+### Phase 3: 운동학 기초 (Kinematics) [DONE]
+* `ex31_fk_2dof`: 2자유도 로봇 팔의 순운동학 시각화.
+* `ex32_ik_site`: 사이드바 슬라이더를 이용한 역운동학 제어.
+* `ex33_trajectory_tracking`: 원형 궤적 추종 및 정밀도 분석.
 
-### Phase 4: LeRobot 통합 (AI Training Ready)
-* `ex41_gym_env`: Gymnasium 환경 구현.
-* `ex42_teleop_dataset`: 조작 데이터 녹화 및 로컬 저장.
-* `ex43_policy_eval`: 정책 로드 및 평가.
+### Phase 4: 비전 (Vision) [DONE]
+* `ex41_camera_setup`: 다중 카메라 설정 및 단축키 시점 전환.
+* `ex42_rgb_render`: 오프스크린 RGB 렌더링 및 PNG 저장.
+* `ex43_depth_render`: 깊이 정보 시각화 (JET 컬러맵).
+
+### Phase 5: LeRobot 기구 이해 (Mechanical Understanding) [IN PROGRESS]
+* `ex51_lerobot_base`: 베이스 회전 동작 및 좌표계 이해.
+* `ex52_lerobot_arms`: 주요 관절(Shoulder/Elbow/Wrist) 가동 범위 이해.
+* `ex53_lerobot_gripper`: 그리퍼 메커니즘 및 물리 이해.
+
+### Phase 6: LeRobot 통합 (AI Training Ready)
+* `ex61_gym_env`: Gymnasium 환경 구현.
+* `ex62_teleop_dataset`: 조작 데이터 녹화 및 로컬 저장.
+* `ex63_policy_eval`: 정책 로드 및 평가.
 
 ---
 
