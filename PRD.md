@@ -47,13 +47,13 @@
 * **ex23_motor_encoder:** 엔코더 피드백 및 데이터 노이즈 시뮬레이션.
 * **ex24_contact_forces:** 접촉력 감지 및 그리퍼 기초.
 
-### Phase 3: 운동학 기초 (Kinematics)
+### Phase 3: 운동학 기초 (Kinematics) [DONE]
 
 * **ex31_fk_2dof:** 2자유도 로봇 팔의 순운동학(FK). 각도에 따른 End-effector 위치 계산 및 시각화.
 * **ex32_ik_site:** 역운동학(IK) 기초. `mocap` 바디나 `site`를 활용하여 목표 위치를 추종하는 IK 구현.
 * **ex33_trajectory_tracking:** 원형 또는 사각형 궤적 추종. 로봇 팔 끝단이 지정된 경로를 따라 움직이도록 제어.
 
-### Phase 4: 비전 (Vision)
+### Phase 4: 비전 (Vision) [IN PROGRESS]
 
 * **ex41_camera_setup:** Front, Side, Top 3개 카메라 정의 및 뷰 전환 렌더링.
 * **ex42_rgb_render:** `mujoco.Renderer`를 사용해 오프스크린 렌더링 후 `numpy` 배열로 변환, PNG 저장.

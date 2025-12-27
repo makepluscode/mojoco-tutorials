@@ -126,13 +126,6 @@ def main():
             while data.time < (now - start_real):
                 mujoco.mj_step(model, data)
 
-            # 5. 스크린샷 저장 (3초 시점)
-            if not screenshot_taken and data.time > 3.0:
-                img_path = os.path.join(current_dir, "result.png")
-                if save_screenshot(model, data, img_path):
-                    print("\n스크린샷 저장 완료")
-                    screenshot_taken = True
-
             viewer.sync()
             time.sleep(0.001)
 
