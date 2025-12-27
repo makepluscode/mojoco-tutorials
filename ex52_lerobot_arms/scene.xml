@@ -1,0 +1,116 @@
+<mujoco model="lerobot_so100_arms">
+    <compiler angle="radian" meshdir="../model/so100/assets" autolimits="true"/>
+
+    <option cone="elliptic" impratio="10"/>
+
+    <asset>
+        <material name="black" rgba="0.1 0.1 0.1 1"/>
+        <material name="white" rgba="1 1 1 1"/>
+
+        <mesh name="Base" file="Base.stl"/>
+        <mesh name="Base_Motor" file="Base_Motor.stl"/>
+        <mesh name="Rotation_Pitch" file="Rotation_Pitch.stl"/>
+        <mesh name="Rotation_Pitch_Motor" file="Rotation_Pitch_Motor.stl"/>
+        <mesh name="Upper_Arm" file="Upper_Arm.stl"/>
+        <mesh name="Upper_Arm_Motor" file="Upper_Arm_Motor.stl"/>
+        <mesh name="Lower_Arm" file="Lower_Arm.stl"/>
+        <mesh name="Lower_Arm_Motor" file="Lower_Arm_Motor.stl"/>
+        <mesh name="Wrist_Pitch_Roll" file="Wrist_Pitch_Roll.stl"/>
+        <mesh name="Wrist_Pitch_Roll_Motor" file="Wrist_Pitch_Roll_Motor.stl"/>
+        <mesh name="Fixed_Jaw" file="Fixed_Jaw.stl"/>
+        <mesh name="Fixed_Jaw_Motor" file="Fixed_Jaw_Motor.stl"/>
+    </asset>
+
+    <default>
+        <default class="so_arm100">
+            <!-- 물리 안정성: 감쇠 및 마찰력 강화 -->
+            <joint frictionloss="0.3" armature="0.1" damping="2.0"/>
+            <!-- 제어 안정성: kv gain으로 속도 감쇠 추가 -->
+            <position kp="50" kv="10" forcerange="-3.5 3.5"/>
+            <default class="visual">
+                <geom type="mesh" contype="0" conaffinity="0" density="0" group="2" material="white"/>
+                <default class="motor_visual">
+                    <geom material="black"/>
+                </default>
+            </default>
+            <default class="collision">
+                <geom group="3" type="mesh" material="white"/>
+            </default>
+        </default>
+    </default>
+
+    <worldbody>
+        <light pos="0 0 2" dir="0 0 -1" diffuse="0.8 0.8 0.8" specular="0.3 0.3 0.3"/>
+        <geom name="floor" type="plane" size="1 1 0.1" rgba="0.8 0.8 0.8 1" pos="0 0 -0.01"/>
+
+        <body name="Base" childclass="so_arm100" pos="0 0 0">
+            <geom type="mesh" mesh="Base" class="visual"/>
+            <geom type="mesh" mesh="Base_Motor" class="motor_visual"/>
+            <geom type="mesh" mesh="Base" class="collision"/>
+
+            <!-- 1. Rotation (Yaw) -->
+            <body name="Rotation_Pitch" pos="0 -0.0452 0.0165" quat="0.707105 0.707108 0 0">
+                <inertial pos="-9.07886e-05 0.0590972 0.031089" quat="0.363978 0.441169 -0.623108 0.533504" mass="0.119226" diaginertia="5.94278e-05 5.89975e-05 3.13712e-05"/>
+                <joint name="Rotation" axis="0 1 0" range="-1.92 1.92"/>
+                <geom type="mesh" mesh="Rotation_Pitch" class="visual"/>
+                <geom type="mesh" mesh="Rotation_Pitch_Motor" class="motor_visual"/>
+                <geom type="mesh" mesh="Rotation_Pitch" class="collision"/>
+
+                <!-- 2. Pitch -->
+                <body name="Upper_Arm" pos="0 0.1025 0.0306" euler="1.57079 0 0">
+                    <inertial pos="-1.72052e-05 0.0701802 0.00310545" quat="0.50104 0.498994 -0.493562 0.50632" mass="0.162409" diaginertia="0.000213312 0.000167164 7.01522e-05"/>
+                    <joint name="Pitch" axis="1 0 0" range="-3.32 0.174"/>
+                    <geom type="mesh" mesh="Upper_Arm" class="visual"/>
+                    <geom type="mesh" mesh="Upper_Arm_Motor" class="motor_visual"/>
+                    <geom type="mesh" mesh="Upper_Arm" class="collision"/>
+
+                    <!-- 3. Elbow -->
+                    <body name="Lower_Arm" pos="0 0.11257 0.028" euler="-1.57079 0 0">
+                        <inertial pos="-0.00339604 0.00137796 0.0768007" quat="0.701995 0.0787996 0.0645626 0.704859" mass="0.147968" diaginertia="0.000138803 0.000107748 4.84242e-05"/>
+                        <joint name="Elbow" axis="1 0 0" range="-0.174 3.14"/>
+                        <geom type="mesh" mesh="Lower_Arm" class="visual"/>
+                        <geom type="mesh" mesh="Lower_Arm_Motor" class="motor_visual"/>
+                        <geom type="mesh" mesh="Lower_Arm" class="collision"/>
+
+                        <!-- 4. Wrist Pitch -->
+                        <body name="Wrist_Pitch_Roll" pos="0 0.0052 0.1349" euler="-1.57079 0 0">
+                            <inertial pos="-0.00852653 -0.0352279 -2.34622e-05" quat="-0.0522806 0.705235 0.0549524 0.704905" mass="0.0661321" diaginertia="3.45403e-05 2.39041e-05 1.94704e-05"/>
+                            <joint name="Wrist_Pitch" axis="1 0 0" range="-1.66 1.66"/>
+                            <geom type="mesh" mesh="Wrist_Pitch_Roll" class="visual"/>
+                            <geom type="mesh" mesh="Wrist_Pitch_Roll_Motor" class="motor_visual"/>
+                            <geom type="mesh" mesh="Wrist_Pitch_Roll" class="collision"/>
+
+                            <!-- 5. Wrist Roll -->
+                            <body name="Fixed_Jaw" pos="0 -0.0601 0" euler="0 1.57079 0">
+                                <inertial pos="0.00552377 -0.0280167 0.000483583" quat="0.41836 0.620891 -0.350644 0.562599" mass="0.0929859" diaginertia="5.03136e-05 4.64098e-05 2.72961e-05"/>
+                                <joint name="Wrist_Roll" axis="0 1 0" range="-2.79 2.79"/>
+                                <geom type="mesh" mesh="Fixed_Jaw" class="visual"/>
+                                <geom type="mesh" mesh="Fixed_Jaw_Motor" class="motor_visual"/>
+                                <geom type="mesh" mesh="Fixed_Jaw" class="collision"/>
+                                
+                                <!-- End of arm pointer for visualization -->
+                                <site name="hand_axis" pos="0 -0.05 0" size="0.01" rgba="0 1 0 1"/>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <position name="Rotation" joint="Rotation" inheritrange="1"/>
+        <position name="Pitch" joint="Pitch" inheritrange="1"/>
+        <position name="Elbow" joint="Elbow" inheritrange="1"/>
+        <position name="Wrist_Pitch" joint="Wrist_Pitch" inheritrange="1"/>
+        <position name="Wrist_Roll" joint="Wrist_Roll" inheritrange="1"/>
+    </actuator>
+
+    <contact>
+        <exclude body1="Base" body2="Rotation_Pitch"/>
+    </contact>
+
+    <keyframe>
+        <key name="home" qpos="0 -1.57 1.57 1.57 -1.57" ctrl="0 -1.57 1.57 1.57 -1.57"/>
+    </keyframe>
+</mujoco>
