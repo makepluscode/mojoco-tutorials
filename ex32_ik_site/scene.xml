@@ -1,0 +1,51 @@
+<mujoco model="2dof_arm_ik">
+    <option gravity="0 0 -9.81" timestep="0.002" />
+
+    <worldbody>
+        <light pos="0 0 3" dir="0 0 -1" />
+        <geom name="floor" type="plane" size="5 5 0.1" rgba="0.8 0.9 0.8 1" />
+
+        <!-- 로봇 베이스 -->
+        <body name="base" pos="0 0 0.1">
+            <geom type="cylinder" size="0.1 0.1" rgba="0.5 0.5 0.5 1" />
+
+            <!-- 첫 번째 링크 (어깨) -->
+            <body name="link1" pos="0 0 0.1">
+                <joint name="joint1" type="hinge" axis="0 0 1" damping="2.0" />
+                <geom type="capsule" fromto="0 0 0 0.5 0 0" size="0.04" rgba="1 0 0 1" />
+
+                <!-- 두 번째 링크 (팔꿈치) -->
+                <body name="link2" pos="0.5 0 0">
+                    <joint name="joint2" type="hinge" axis="0 0 1" damping="2.0" />
+                    <geom type="capsule" fromto="0 0 0 0.4 0 0" size="0.03" rgba="0 1 0 1" />
+                    <site name="ee" pos="0.4 0 0" size="0.04" rgba="1 1 0 1" />
+                </body>
+            </body>
+        </body>
+
+        <!-- IK 타겟 -->
+        <body name="target" pos="0 0 0.2">
+            <joint name="target_x" type="slide" axis="1 0 0" damping="10" />
+            <joint name="target_y" type="slide" axis="0 1 0" damping="10" />
+            <joint name="target_z" type="slide" axis="0 0 1" damping="10" />
+            <geom type="sphere" size="0.05" rgba="1 1 1 0.5" contype="0" conaffinity="0" />
+            <site name="target_site" pos="0 0 0" size="0.01" />
+        </body>
+    </worldbody>
+
+    <actuator>
+        <!-- 로봇 팔 조인트 제어 (Kp 복구) -->
+        <position name="arm_pos1" joint="joint1" kp="500" />
+        <position name="arm_pos2" joint="joint2" kp="500" />
+
+        <!-- 타겟 위치 제어 -->
+        <position name="[Tgt] X" joint="target_x" kp="500" ctrlrange="-1 1" forcerange="-100 100" />
+        <position name="[Tgt] Y" joint="target_y" kp="500" ctrlrange="-1 1" forcerange="-100 100" />
+        <position name="[Tgt] Z" joint="target_z" kp="500" ctrlrange="0 0.5" forcerange="-100 100" />
+    </actuator>
+
+    <sensor>
+        <framepos name="actual_ee" objtype="site" objname="ee" />
+        <framepos name="target_pos" objtype="site" objname="target_site" />
+    </sensor>
+</mujoco>
