@@ -1,0 +1,40 @@
+<mujoco model="2dof_arm_fk">
+    <option gravity="0 0 -9.81" timestep="0.002" />
+
+    <!-- 사용자 정의 센서 데이터 공간 확보 (X, Y, Z 총 3개) -->
+    <size nuser_sensor="3" />
+
+    <worldbody>
+        <light pos="0 0 3" dir="0 0 -1" />
+        <geom name="floor" type="plane" size="5 5 0.1" rgba="0.8 0.9 0.8 1" />
+
+        <body name="base" pos="0 0 0.1">
+            <geom type="cylinder" size="0.1 0.1" rgba="0.5 0.5 0.5 1" />
+
+            <body name="link1" pos="0 0 0.1">
+                <joint name="joint1" type="hinge" axis="0 0 1" />
+                <geom type="capsule" fromto="0 0 0 0.5 0 0" size="0.04" rgba="1 0 0 1" />
+
+                <body name="link2" pos="0.5 0 0">
+                    <joint name="joint2" type="hinge" axis="0 0 1" />
+                    <geom type="capsule" fromto="0 0 0 0.4 0 0" size="0.03" rgba="0 1 0 1" />
+                    <site name="ee" pos="0.4 0 0" size="0.04" rgba="1 1 0 1" />
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>
+        <position name="pos1" joint="joint1" kp="100" />
+        <position name="pos2" joint="joint2" kp="100" />
+    </actuator>
+
+    <sensor>
+        <framepos name="actual_ee" objtype="site" objname="ee" />
+        
+        <!-- 사용자 정의 센서 (cm 단위) -->
+        <user name="calc_x_cm" dim="1" />
+        <user name="calc_y_cm" dim="1" />
+        <user name="calc_z_cm" dim="1" />
+    </sensor>
+</mujoco>

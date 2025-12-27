@@ -1,0 +1,40 @@
+<mujoco model="2dof_arm_pid">
+    <option gravity="0 0 -9.81" timestep="0.002" />
+
+    <worldbody>
+        <light pos="0 0 3" dir="0 0 -1" />
+        <geom name="floor" type="plane" size="5 5 0.1" rgba="0.8 0.9 0.8 1" />
+
+        <!-- 로봇 베이스 -->
+        <body name="base" pos="0 0 0.1">
+            <geom type="cylinder" size="0.1 0.1" rgba="0.5 0.5 0.5 1" />
+
+            <!-- 첫 번째 링크 (어깨) -->
+            <body name="link1" pos="0 0 0.1">
+                <joint name="joint1" type="hinge" axis="0 0 1" damping="0.1" />
+                <geom type="capsule" fromto="0 0 0 0.5 0 0" size="0.04" rgba="1 0 0 1" />
+
+                <!-- 두 번째 링크 (꿈치) -->
+                <body name="link2" pos="0.5 0 0">
+                    <joint name="joint2" type="hinge" axis="0 0 1" damping="0.1" />
+                    <geom type="capsule" fromto="0 0 0 0.4 0 0" size="0.03" rgba="0 1 0 1" />
+                    <site name="ee" pos="0.4 0 0" size="0.04" rgba="1 1 0 1" />
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <!-- 액추에이터: 토크 모터 사용 -->
+    <actuator>
+        <motor name="motor1" joint="joint1" gear="10" />
+        <motor name="motor2" joint="joint2" gear="5" />
+    </actuator>
+
+    <!-- 센서: 관절 위치 및 제어 토크 모니터링 -->
+    <sensor>
+        <jointpos name="pos1" joint="joint1" />
+        <jointpos name="pos2" joint="joint2" />
+        <actuatorfrc name="torque1" actuator="motor1" />
+        <actuatorfrc name="torque2" actuator="motor2" />
+    </sensor>
+</mujoco>

@@ -38,10 +38,10 @@
 
 ### Phase 2: 제어 및 센서 (Control & Sensors)
 
-* **ex21_motor_control:** 2자유도 로봇 팔. 키보드 입력을 `data.ctrl`에 매핑하여 실시간 제어.
-* **ex22_pid_control:** `qpos`, `qvel` 데이터를 읽어 타겟 각도를 추종하는 PID 로직 구현.
-* **ex23_sensor_fusion:** 가속도계, 자이로, 터치 센서 데이터를 실시간으로 터미널에 출력 및 시각화 준비.
-* **ex24_contact_forces:** `data.contact`를 순회하며 발생하는 충돌 쌍과 법선 힘(Contact Force)을 계산 및 출력.
+* **ex21_motor_control:** 2-DOF 로봇 암 키보드 제어.
+* **ex22_pid_control:** PID 제어기를 이용한 위치 제어.
+* **ex23_motor_encoder:** 엔코더 피드백 및 데이터 노이즈 시뮬레이션.
+* **ex24_contact_forces:** 접촉력 감지 및 그리퍼 기초.
 
 ### Phase 3: 운동학 기초 (Kinematics)
 

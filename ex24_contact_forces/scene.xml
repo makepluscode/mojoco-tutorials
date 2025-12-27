@@ -1,0 +1,33 @@
+<mujoco model="contact_force_demo">
+    <option gravity="0 0 -9.81" timestep="0.002" />
+
+    <worldbody>
+        <light pos="0 0 3" dir="0 0 -1" />
+        <geom name="floor" type="plane" size="5 5 0.1" rgba="0.8 0.9 0.8 1" />
+
+        <!-- 대상 물체 (박스) -->
+        <body name="box" pos="0.5 0 0.05">
+            <freejoint name="box_joint" />
+            <geom type="box" size="0.05 0.05 0.05" rgba="0 0 1 1" mass="1.0" />
+        </body>
+
+        <!-- 로봇 팔 (간소화) -->
+        <body name="pusher" pos="0 0 0.1">
+            <joint name="slide_x" type="slide" axis="1 0 0" damping="10" />
+            <geom name="end_effector" type="capsule" fromto="0 0 0 0.1 0 0" size="0.04" rgba="1 0 0 1" />
+            
+            <!-- 접촉력 감지를 위한 사이트 및 센서 -->
+            <site name="touch_site" pos="0.1 0 0" size="0.041" rgba="1 1 0 0" />
+        </body>
+    </worldbody>
+
+    <actuator>
+        <!-- 위치 제어기로 푸셔 이동 -->
+        <position name="move_x" joint="slide_x" kp="1000" />
+    </actuator>
+
+    <sensor>
+        <!-- 터치 센서: 법선 방향의 접촉력 감지 -->
+        <touch name="contact_sensor" site="touch_site" />
+    </sensor>
+</mujoco>
