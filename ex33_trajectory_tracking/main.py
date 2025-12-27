@@ -41,7 +41,7 @@ def save_screenshot(model, data, path):
         cam.lookat = [0.3, 0.1, 0.2]
         renderer.update_scene(data, camera=cam)
         
-        # 축 및 라벨 수동 그리기 (렌더러 씬용)
+        # 축 및 라벨 수동 그리기
         for i, color, end_pt in zip([1, 2, 3], [[1, 0, 0, 1], [0, 1, 0, 1], [0, 0, 1, 1]], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]):
             mujoco.mjv_initGeom(renderer.scene.geoms[i], type=mujoco.mjtGeom.mjGEOM_ARROW, size=[0.015, 0.015, 1.0],
                                 pos=[0, 0, 0], mat=np.eye(3).flatten(), rgba=color)
@@ -72,11 +72,13 @@ def main():
     ee_id = model.site("ee").id
     target_mocap_id = model.body("target").mocapid[0]
 
-    # 초기값
+    # 초기 파라미터
     data.ctrl[radius_act_id] = 0.2
     data.ctrl[freq_act_id] = 0.5
-    step_size = 0.5
-    damping = 0.02
+    
+    # IK 파라미터 (정밀도 향상)
+    step_size = 1.0   # 관절 업데이트 계수 (1.0 = 지연 최소화)
+    damping = 0.01    # 수치적 안정성을 위한 최소 댐핑
 
     # 뷰어 실행
     with mujoco.viewer.launch_passive(model, data) as viewer:
@@ -91,7 +93,7 @@ def main():
 
         while viewer.is_running():
             with viewer.lock():
-                # 1. 궤적 생성
+                # 1. 궤적 생성 (원형)
                 radius = data.ctrl[radius_act_id]
                 freq = data.ctrl[freq_act_id]
                 cx, cy = 0.45, 0.0
@@ -104,11 +106,15 @@ def main():
                 curr_pos = data.site_xpos[ee_id]
                 target_pos = data.mocap_pos[target_mocap_id]
                 error = target_pos - curr_pos
+                
                 jacp = np.zeros((3, model.nv))
                 jacr = np.zeros((3, model.nv))
                 mujoco.mj_jacSite(model, data, jacp, jacr, ee_id)
-                J = jacp[:, :2]
+                J = jacp[:, :2] # 2-DOF
+                
                 dq = J.T @ np.linalg.inv(J @ J.T + damping * np.eye(3)) @ error
+                
+                # 제어 입력 (arm_pos) 업데이트 (현재 위치 + 변화량)
                 data.ctrl[0] = data.qpos[0] + dq[0] * step_size
                 data.ctrl[1] = data.qpos[1] + dq[1] * step_size
 

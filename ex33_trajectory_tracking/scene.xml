@@ -37,9 +37,9 @@
     </worldbody>
 
     <actuator>
-        <!-- 로봇 팔 제어 -->
-        <position name="arm_pos1" joint="joint1" kp="500" />
-        <position name="arm_pos2" joint="joint2" kp="500" />
+        <!-- 로봇 팔 제어 (게인 상향으로 추종성 개선) -->
+        <position name="arm_pos1" joint="joint1" kp="1000" kv="10" />
+        <position name="arm_pos2" joint="joint2" kp="1000" kv="10" />
 
         <!-- 궤적 파라미터 (KP=0으로 설정하여 슬라이더 역할만 수행) -->
         <position name="[Param] Radius" joint="dummy_r" kp="0" ctrlrange="0.05 0.4" />
